@@ -15,6 +15,8 @@ async function loadPokemon(){
         }else{
             console.log(currentPokemon)
         }
+
+        
     }
 
     /*let url = 'https://pokeapi.co/api/v2/pokemon/charmander';
@@ -36,9 +38,11 @@ async function renderPokedex(i){
     </div>
     `
         
-    if (currentPokemon['types']['1']['type']['name']) {
+    if (currentPokemon['types']['1']) {
         document.getElementById(`type2.${i}`).innerHTML =  await currentPokemon['types']['1']['type']['name']
     }
+
+    setBackground(i)
 
 
 
@@ -46,4 +50,18 @@ async function renderPokedex(i){
 
  //   document.getElementById('name').innerHTML = currentPokemon['name'];
    // document.getElementById('picture').src = currentPokemon['sprites']['other']['home']['front_default']
+}
+
+ function setBackground(i){
+    let type1 = document.getElementById(`type1.${i}`).innerHTML
+    let type2 = document.getElementById(`type2.${i}`).innerHTML
+
+    document.getElementById(`type1.${i}`).classList.add(type1)
+
+    if (document.getElementById(`type2.${i}`).innerHTML != '') {
+         document.getElementById(`type2.${i}`).classList.add(type2)
+    } 
+        
+
+    
 }

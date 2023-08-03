@@ -11,7 +11,7 @@ body{
 }
 
 .pokedex{
-    min-height: 50vh;
+    min-height: 40vh;
     background-color: rgb(185, 30, 3);
     color: white;
     display: flex;
@@ -21,6 +21,7 @@ body{
     align-items: center;
     margin: 5px;
     border-radius: 25%;
+    color: black;
 }
 
 .picture{
@@ -35,3 +36,68 @@ body{
     min-height: 100px;
     width: 200px;
 }
+
+.grass{
+    background-color: green;
+}
+
+.poison{
+    background-color: purple;
+}
+
+.fire{
+    background-color: red;
+}
+
+.flying{
+    background-color: lightblue;
+}
+
+.water{
+    background-color: blue;
+}
+
+.bug{
+    background-color: darkgreen;
+}
+
+.normal{
+    background-color: darkgrey;
+}
+
+.electric{
+    background-color: yellow;
+}
+
+.ground{
+    background-color: brown;
+}
+
+.fairy{
+    background-color: pink;
+}
+
+.fightimg{
+    background-color: maroon;
+}
+
+.rock{
+    background-color: saddlebrown;
+}
+
+.steel{
+    background-color: slategray;
+}
+
+.psychic{
+    background-color: palevioletred;
+}
+
+.ice{
+    background-color: cyan;
+}
+
+.ghost{
+    background-color: mediumorchid;
+}
+
