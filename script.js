@@ -30,11 +30,11 @@ async function loadPokemon(){
 async function renderPokedex(i){
 
     document.getElementById('pokedexContainer').innerHTML += /*html*/`    
-    <div class="pokedex">
+    <div id="pokemon${i}" class="pokedex">
     <h1 id="name${i}">${currentPokemon['name']}</h1>
     <img class="picture" src="${currentPokemon['sprites']['other']['home']['front_default']}" id="picture${i}" alt="">
-    <span id="type1.${i}">${currentPokemon['types']['0']['type']['name']}</span>
-    <span id="type2.${i}"></span>
+    <span class="type" id="type1.${i}">${currentPokemon['types']['0']['type']['name']}</span>
+    <span class="type" id="type2.${i}"></span>
     </div>
     `
         
@@ -56,11 +56,13 @@ async function renderPokedex(i){
     let type1 = document.getElementById(`type1.${i}`).innerHTML
     let type2 = document.getElementById(`type2.${i}`).innerHTML
 
-    document.getElementById(`type1.${i}`).classList.add(type1)
+    document.getElementById(`type1.${i}`).classList.add(type1+'BG')
 
     if (document.getElementById(`type2.${i}`).innerHTML != '') {
-         document.getElementById(`type2.${i}`).classList.add(type2)
+         document.getElementById(`type2.${i}`).classList.add(type2+'BG')
     } 
+
+    document.getElementById(`pokemon${i}`).classList.add(type1)
         
 
     

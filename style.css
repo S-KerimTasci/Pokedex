@@ -37,67 +37,145 @@ body{
     width: 200px;
 }
 
+.type{
+    padding: 6px;
+    margin: 3px;
+    min-width: 50px;
+    text-align: center;
+    border-radius: 25px;
+}
+
 .grass{
-    background-color: green;
+    background-color: hsl(120, 100%, 25%);
+}
+
+.grassBG{
+    background-color: hsla(120, 69%, 75%, 0.6);
 }
 
 .poison{
     background-color: purple;
 }
 
+.poisonBG{
+    background-color: rgb(209, 107, 209);
+}
+
 .fire{
     background-color: red;
+}
+
+.fireBG{
+    background-color: rgb(228, 79, 79);
 }
 
 .flying{
     background-color: lightblue;
 }
 
+.flyingBG{
+    background-color: rgb(183, 232, 248);
+}
+
 .water{
     background-color: blue;
+}
+
+.waterBG{
+    background-color: rgb(112, 112, 241);
 }
 
 .bug{
     background-color: darkgreen;
 }
 
+.bugBG{
+    background-color: rgb(61, 141, 61);
+}
+
 .normal{
     background-color: darkgrey;
+}
+
+.normalBG{
+    background-color: rgb(216, 212, 212);
 }
 
 .electric{
     background-color: yellow;
 }
 
+.electricBG{
+    background-color: rgb(250, 250, 94);
+}
+
 .ground{
     background-color: brown;
 }
 
+.groundBG{
+    background-color: rgb(177, 83, 83);
+}
 .fairy{
-    background-color: pink;
+    background-color: darksalmon;
 }
 
-.fightimg{
+.fairyBG{
+    background-color: rgb(235, 180, 162);
+}
+
+.fighting{
     background-color: maroon;
+}
+
+.fightingBG{
+    background-color: rgb(161, 64, 64);
 }
 
 .rock{
     background-color: saddlebrown;
 }
 
+.rockBG{
+    background-color: rgb(165, 107, 65);
+}
+
 .steel{
     background-color: slategray;
+}
+
+.steelBG{
+    background-color: rgb(146, 159, 172);
 }
 
 .psychic{
     background-color: palevioletred;
 }
 
+.psychicBG{
+    background-color: rgb(231, 160, 184);
+}
+
 .ice{
     background-color: cyan;
+}
+
+.iceBG{
+    background-color: rgb(161, 233, 233);
 }
 
 .ghost{
     background-color: mediumorchid;
 }
 
+.ghostBG{
+    background-color: rgb(212, 148, 228);
+}
+
+.dragon{
+    background-color: olive;
+}
+
+.dragonBG{
+    background-color: rgb(165, 165, 46);
+}
