@@ -24,12 +24,25 @@
 
     <div class="overlay" id="overlay">
         <div class="overlayCentre" id="overlayCentre">
-            <div id="pokemonOverlay" class="pokedex">
+            <div id="pokemonOverlay" class="pokedex w300">
                 <img src="img/close.png" onclick="toggle('add')" class="icon">
                 <h1 id="nameOverlay">Beispiel Pokemon</h1>
-                <img class="pictureOverlay" src="img/preview.png" id="pictureOverlay">
+                <div>
+                    <img src="img/previous.png" onclick="overlayPrevious(-1)" id="previous">
+                    <img class="pictureOverlay" src="img/preview.png" id="pictureOverlay">
+                    <img src="img/next.png" onclick="overlayNext(+1)" id="next">
+                </div>
                 <div class="infoOverlay" id="infoOverlay">
-                    <div class="infoOverlayContainer"></div>
+                    <div class="infoOverlayContainer">
+                        <div>
+                            <h2 id="height"></h2>
+                            <h3>Height</h3>
+                        </div>
+                        <div>
+                            <h2 id="weight"></h2>
+                            <h3>Weight</h3>
+                        </div>
+                    </div>
                     <div class="infoOverlayButtons">
                         <button>Stats</button>
                         <button>Moves</button>
