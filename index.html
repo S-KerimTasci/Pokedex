@@ -26,7 +26,7 @@
     <div class="overlay" id="overlay">
         <div class="overlayCentre" id="overlayCentre">
             <div id="pokemonOverlay" class="pokedex w300">
-                <img src="img/close.png" onclick="toggle('add')" class="icon">
+                <img src="img/close.png" onclick="hide()" class="icon">
                 <h1 id="nameOverlay">Beispiel Pokemon</h1>
                 <div>
                     <img src="img/previous.png" onclick="overlayPrevious(-1)" id="previous">
@@ -34,7 +34,7 @@
                     <img src="img/next.png" onclick="overlayNext(+1)" id="next">
                 </div>
                 <div class="infoOverlay" id="infoOverlay">
-                    <div class="infoOverlayContainer">
+                    <div class="infoOverlayContainer" id="overlayHeightWeight">
                         <div>
                             <h2 id="height"></h2>
                             <h3>Height</h3>
@@ -44,8 +44,11 @@
                             <h3>Weight</h3>
                         </div>
                     </div>
+                    <div id="chart" class="d-none infoOverlayContainer">
+                        <canvas id="myChart"></canvas>
+                    </div>
                     <div class="infoOverlayButtons">
-                        <button>Stats</button>
+                        <button onclick="showStats()">Stats</button>
                         <button>Moves</button>
                     </div>
                 </div>
@@ -53,9 +56,7 @@
         </div>
     </div>
 
-    <div>
-        <canvas id="myChart"></canvas>
-      </div>
+    
 </body>
 
 </html>

@@ -47,7 +47,7 @@ async function renderPokedex(i){
 }
 
 async function openOverlay(i){
-    toggle('remove')
+    toggle('overlay','remove')
     currentIndex = i;
 
     let url = `https://pokeapi.co/api/v2/pokemon/${first151PokemonNames[i]}`;
@@ -57,7 +57,6 @@ async function openOverlay(i){
         myChart.destroy();
         statsValues = [];
         statsNames = [];
-        //document.getElementById('myChart').innerHTML=''
     }
 }
 
@@ -90,8 +89,14 @@ async function overlayNext(i){
 
 }
 
-function toggle(i){
-    document.getElementById('overlay').classList[i]('d-none')
+function toggle(id, i){
+    document.getElementById(id).classList[i]('d-none')
+}
+
+function hide(){
+    toggle('overlay','add')
+    toggle('overlayHeightWeight','remove')
+    toggle('chart','add')
 }
 
 function formatNumberWithComma(number) {
@@ -114,7 +119,7 @@ function draw(){
       data: {
         labels: statsNames,
         datasets: [{
-          label: 'Stats',
+         label: 'Stats',
           data: statsValues,
           borderWidth: 1
         }]
@@ -175,3 +180,8 @@ function overlayTemplate(url) {
       });
   }
   
+
+  function showStats(){
+    toggle('overlayHeightWeight','add')
+    toggle('chart','remove')
+  }
