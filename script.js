@@ -28,15 +28,19 @@ async function loadPokemon(){
 }
 
 async function renderPokedex(i){
+    let nameVar = first151PokemonNames[`${i}`];
 
     document.getElementById('pokedexContainer').innerHTML += /*html*/`    
-    <div id="pokemon${i}" class="pokedex">
+    <div id="pokemon${i}" class="pokedex" onclick="openOverlay('${nameVar}')">
     <h1 id="name${i}">${currentPokemon['name']}</h1>
     <img class="picture" src="${currentPokemon['sprites']['other']['home']['front_default']}" id="picture${i}" alt="">
     <span class="type" id="type1.${i}">${currentPokemon['types']['0']['type']['name']}</span>
     <span class="type" id="type2.${i}"></span>
     </div>
     `
+
+    //Overlaytest
+    document.getElementById('pictureOverlay').src =`${currentPokemon['sprites']['other']['home']['front_default']}`
         
     if (currentPokemon['types']['1']) {
         document.getElementById(`type2.${i}`).innerHTML =  await currentPokemon['types']['1']['type']['name']
@@ -63,7 +67,24 @@ async function renderPokedex(i){
     } 
 
     document.getElementById(`pokemon${i}`).classList.add(type1)
-        
+}
 
+async function openOverlay(i){
+    toggle('remove')
+
+    let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+    let response = await fetch(url);
+    let overlayPokemon = await response.json();
+    let overlayPokemonType = overlayPokemon['types']['0']['type']['name'];
+
+    document.getElementById('overlayCentre').className = '';
     
+    document.getElementById('nameOverlay').innerHTML = overlayPokemon['name'];
+    document.getElementById('pictureOverlay').src = overlayPokemon['sprites']['other']['home']['front_default'];
+
+    document.getElementById('overlayCentre').classList.add(overlayPokemonType, 'overlayCentre')
+}
+
+function toggle(i){
+    document.getElementById('overlay').classList[i]('d-none')
 }

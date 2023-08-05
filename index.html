@@ -20,9 +20,24 @@
 <body onload="loadPokemon()">
 
     <div class="pokedexContainer" id="pokedexContainer">
-
     </div>
 
+    <div class="overlay" id="overlay">
+        <div class="overlayCentre" id="overlayCentre">
+            <div id="pokemonOverlay" class="pokedex">
+                <img src="img/close.png" onclick="toggle('add')" class="icon">
+                <h1 id="nameOverlay">Beispiel Pokemon</h1>
+                <img class="pictureOverlay" src="img/preview.png" id="pictureOverlay">
+                <div class="infoOverlay" id="infoOverlay">
+                    <div class="infoOverlayContainer"></div>
+                    <div class="infoOverlayButtons">
+                        <button>Stats</button>
+                        <button>Moves</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
