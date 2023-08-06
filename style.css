@@ -98,6 +98,24 @@ h1{
     align-items: center;
 }
 
+.moves{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    height:26vh;
+    padding-top: 15px
+}
+
+.move{
+   border: solid;
+   border-color: black;
+   border-radius: 25px; 
+   width: 150px;
+   text-align: center;
+   margin: 5px;
+}
+
 .d-none{
     display: none;
 }

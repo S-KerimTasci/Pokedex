@@ -1,8 +1,9 @@
 const first151PokemonNames = ["bulbasaur","ivysaur","venusaur","charmander","charmeleon","charizard","squirtle","wartortle","blastoise","caterpie","metapod","butterfree","weedle","kakuna","beedrill","pidgey","pidgeotto","pidgeot","rattata","raticate","spearow","fearow","ekans","arbok","pikachu","raichu","sandshrew","sandslash","nidoran-f","nidorina","nidoqueen","nidoran-m","nidorino","nidoking","clefairy","clefable","vulpix","ninetales","jigglypuff","wigglytuff","zubat","golbat","oddish","gloom","vileplume","paras","parasect","venonat","venomoth","diglett","dugtrio","meowth","persian","psyduck","golduck","mankey","primeape","growlithe","arcanine","poliwag","poliwhirl","poliwrath","abra","kadabra","alakazam","machop","machoke","machamp","bellsprout","weepinbell","victreebel","tentacool","tentacruel","geodude","graveler","golem","ponyta","rapidash","slowpoke","slowbro","magnemite","magneton","farfetchd","doduo","dodrio","seel","dewgong","grimer","muk","shellder","cloyster","gastly","haunter","gengar","onix","drowzee","hypno","krabby","kingler","voltorb","electrode","exeggcute","exeggutor","cubone","marowak","hitmonlee","hitmonchan","lickitung","koffing","weezing","rhyhorn","rhydon","chansey","tangela","kangaskhan","horsea","seadra","goldeen","seaking","staryu","starmie","mr-mime","scyther","jynx","electabuzz","magmar","pinsir","tauros","magikarp","gyarados","lapras","ditto","eevee","vaporeon","jolteon","flareon","porygon","omanyte","omastar","kabuto","kabutops","aerodactyl","snorlax","articuno","zapdos","moltres","dratini","dragonair","dragonite","mewtwo","mew"];
 let currentPokemon;
 let currentIndex;
-let statsNames =[]
-let statsValues =[]
+let statsNames =[];
+let statsValues =[];
+let moveNames =[];
 let myChart;
 
 
@@ -53,14 +54,15 @@ async function openOverlay(i){
     let url = `https://pokeapi.co/api/v2/pokemon/${first151PokemonNames[i]}`;
     overlayTemplate(url)
 
-    if (myChart) {
-        myChart.destroy();
-        statsValues = [];
-        statsNames = [];
-    }
+    destroyChart()
 }
 
 async function overlayPrevious(i){
+    statsValues =[];
+    moveNames =[];
+    show();
+    destroyChart();
+
     let previousPokemon = +currentIndex+i
 
     if (previousPokemon < 0) {
@@ -69,12 +71,15 @@ async function overlayPrevious(i){
         overlayTemplate(url)
         currentIndex = previousPokemon 
     }
-
-    statsValues =[];
 }
 
 
 async function overlayNext(i){
+    statsValues =[];
+    moveNames =[];
+    show()
+    destroyChart();
+
     let nextPokemon = +currentIndex+i
 
     if (nextPokemon >= first151PokemonNames.length) {
@@ -84,9 +89,6 @@ async function overlayNext(i){
     overlayTemplate(url)
     currentIndex = nextPokemon
     }
-
-    statsValues =[];
-
 }
 
 function toggle(id, i){
@@ -97,6 +99,12 @@ function hide(){
     toggle('overlay','add')
     toggle('overlayHeightWeight','remove')
     toggle('chart','add')
+}
+
+function show(){
+    toggle('chart','add')
+    toggle('moves','add')
+    toggle('overlayHeightWeight','remove')
 }
 
 function formatNumberWithComma(number) {
@@ -134,6 +142,18 @@ function draw(){
     });
 }
 
+function renderMoves(){
+    document.getElementById('moves').innerHTML ='';
+
+    for (let i = 0; i < moveNames.length; i++) {
+        const move = moveNames[i];
+
+        document.getElementById('moves').innerHTML += /*html*/`
+        <div class="move">${move}</div>
+    `
+    }
+}
+
 function pushStats(overlayPokemon){
     for (let i = 0; i < overlayPokemon['stats'].length; i++) {
         const name = overlayPokemon['stats'][i]['stat'];
@@ -141,6 +161,21 @@ function pushStats(overlayPokemon){
 
         const value = overlayPokemon['stats'][i]['base_stat']
         statsValues.push(value)
+    }
+}
+
+function pushMoves(overlayPokemon){
+    for (let i = 0; i < overlayPokemon['moves'].length; i++) {
+        const move = overlayPokemon['moves'][i]['move']['name'];
+        moveNames.push(move)
+    }
+}
+
+function destroyChart(){
+    if (myChart) {
+        myChart.destroy();
+        statsValues = [];
+        statsNames = [];
     }
 }
 
@@ -172,8 +207,10 @@ function overlayTemplate(url) {
         document.getElementById('overlayCentre').classList.add(overlayPokemonType, 'overlayCentre');
 
         pushStats(overlayPokemon)
+        pushMoves(overlayPokemon)
 
         draw()
+        renderMoves()
       })
       .catch((error) => {
         console.error('Fehler bei der Verarbeitung des Pokémon-Overlays:', error);
@@ -184,4 +221,11 @@ function overlayTemplate(url) {
   function showStats(){
     toggle('overlayHeightWeight','add')
     toggle('chart','remove')
+    toggle('moves','add')
   }
+
+function showMoves(){
+    toggle('overlayHeightWeight','add')
+    toggle('chart','add')
+    toggle('moves','remove')
+}  
