@@ -4,12 +4,41 @@ body{
     background-color: khaki;
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+    
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 10px;
+}
+
+
 h1{
     text-transform: capitalize;
 }
 
 img:hover{
     cursor: pointer;
+}
+
+button{
+    padding: 6px;
+    margin: 3px;
+    min-width: 70px;
+    text-align: center;
+    border-radius: 25px;
+    text-transform: capitalize;
+    border: solid;
 }
 
 .header{
@@ -105,6 +134,8 @@ img:hover{
     border-radius: 25px;
     border-color: black;
     border: solid;
+    padding: 13px;
+    margin: 9px;
 }
 
 .infoOverlayContainer{
@@ -127,7 +158,8 @@ img:hover{
     align-items: center;
     overflow-y: scroll;
     height:26vh;
-    padding-top: 15px
+    padding-left: 5px;
+    padding-bottom: 6px;
 }
 
 .move{
@@ -285,4 +317,10 @@ img:hover{
 
 .dragonBG{
     background-color: rgb(165, 165, 46);
+}
+
+@media(max-width: 580px) {
+    .headerName {
+        display: none;
+    }
 }
