@@ -8,6 +8,29 @@ h1{
     text-transform: capitalize;
 }
 
+img:hover{
+    cursor: pointer;
+}
+
+.header{
+    background-color: white;
+    padding-left: 36px;
+    padding-right: 36px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo{
+    width: 80px;
+}
+
+.headerContent{
+    display: flex;
+    align-items: center;
+}
 .pokedexContainer{
     display: flex;
     flex-wrap: wrap;
@@ -15,7 +38,7 @@ h1{
 }
 
 .pokedex{
-    min-height: 45vh;
+    height: 45vh;
     display: flex;
     width: 250px;
     flex-direction: column;

@@ -5,9 +5,12 @@ let statsNames =[];
 let statsValues =[];
 let moveNames =[];
 let myChart;
+let isloading;
 
 
 async function loadPokemon(){
+    isloading = true
+
     for (let i = 0; i < first151PokemonNames.length; i++) {
         const element = first151PokemonNames[i];
 
@@ -16,11 +19,13 @@ async function loadPokemon(){
         currentPokemon = await response.json();
 
         if (currentPokemon) {
-            renderPokedex(i)
+            await renderPokedex(i)
         }else{
             console.log(currentPokemon)
         }   
     }
+
+    isloading= false
 }
 
 async function renderPokedex(i){
@@ -49,6 +54,7 @@ async function renderPokedex(i){
 
 async function openOverlay(i){
     toggle('overlay','remove')
+    show();
     currentIndex = i;
 
     let url = `https://pokeapi.co/api/v2/pokemon/${first151PokemonNames[i]}`;
@@ -179,11 +185,70 @@ function destroyChart(){
     }
 }
 
+
+function findPokemon(){
+    // Event-Listener für das Input-Feld
+let search = document.getElementById('search').value
+    search = search.toLowerCase();
+  
+    // Filtere die Namen der Pokémon, die dem eingegebenen Wert entsprechen
+    const filteredPokemonNames = first151PokemonNames.filter((pokemonName) => {
+      return pokemonName.startsWith(search);
+    });
+  
+    // Lösche den Inhalt der Pokedex-Container-Div, um neu zu rendern
+    
+  
+    // Rendere die Pokémon mit den gefilterten Namen
+    
+      if (search =='' && isloading== true) {
+      } else if (search =='' && isloading== false) {
+        document.getElementById('pokedexContainer').innerHTML = '';
+        loadPokemon()
+      }else{
+        document.getElementById('pokedexContainer').innerHTML = '';
+        for (let i = 0; i < filteredPokemonNames.length; i++) {
+            const pokemonName = filteredPokemonNames[i];
+            const element = first151PokemonNames.indexOf(pokemonName);
+        renderSearch(pokemonName, element);
+      }
+      
+    }
+  };
+
+    
+    /*let search = document.getElementById('search').value
+    search = search.toLowerCase();
+    console.log(search)
+
+    document.getElementById('pokedexContainer').innerHTML =''
+
+    for (let i = 0; i < first151PokemonNames.length; i++) {
+        const name = first151PokemonNames[i];
+        if (document.getElementById(name).innerHTML.toLowerCase().includes(search)) {
+            document.getElementById('pokedexContainer').innerHTML += htmlTemplate(i)
+        }
+    }
+}*/
+
+async function renderSearch(i,j){
+        let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+        let response = await fetch(url);
+        currentPokemon = await response.json();
+
+        if (currentPokemon) {
+            renderPokedex(j)
+        }else{
+            console.log(currentPokemon)
+        }   
+    }
+
+
 function htmlTemplate(i){
     return /*html*/`    
     <div id="pokemon${i}" class="pokedex" onclick="openOverlay('${i}')">
     <h1 id="name${i}">${currentPokemon['name']}</h1>
-    <img class="picture" src="${currentPokemon['sprites']['other']['home']['front_default']}" id="picture${i}" alt="">
+    <img  class="picture" src="${currentPokemon['sprites']['other']['home']['front_default']}" id="picture${i}" alt="">
     <span class="type" id="type1.${i}">${currentPokemon['types']['0']['type']['name']}</span>
     <span class="type" id="type2.${i}"></span>
     </div>`
@@ -229,3 +294,9 @@ function showMoves(){
     toggle('chart','add')
     toggle('moves','remove')
 }  
+
+function showHW(){
+    toggle('overlayHeightWeight','remove')
+    toggle('chart','add')
+    toggle('moves','add')
+}

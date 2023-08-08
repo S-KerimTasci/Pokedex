@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poke Dex</title>
+    <link rel="icon" type="image/x-icon" href="img/pokeball.png">
 
     <script src="script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,6 +21,16 @@
 
 <body onload="loadPokemon()">
 
+    <header class="header">
+        <div class="headerContent">
+        <a href="#"><img src="img/logo.png" class="logo"></a>
+        <h1>Pokedex</h1>
+        </div>
+        <div>
+            <input onkeyup="findPokemon()" type="text" placeholder="search" id="search">
+        </div>
+    </header>
+
     <div class="pokedexContainer" id="pokedexContainer">
     </div>
 
@@ -30,7 +41,7 @@
                 <h1 id="nameOverlay">Beispiel Pokemon</h1>
                 <div>
                     <img src="img/previous.png" onclick="overlayPrevious(-1)" id="previous">
-                    <img class="pictureOverlay" src="img/preview.png" id="pictureOverlay">
+                    <img class="pictureOverlay" onclick="showHW()" src="img/preview.png" id="pictureOverlay">
                     <img src="img/next.png" onclick="overlayNext(+1)" id="next">
                 </div>
                 <div class="infoOverlay" id="infoOverlay">
@@ -60,7 +71,7 @@
 
 
 
-    
+
 </body>
 
 </html>
