@@ -2,6 +2,7 @@ body{
     margin: 0;
     font-family: 'Albert Sans', sans-serif;
     background-color: khaki;
+    width: 100%;
 }
 
 ::-webkit-scrollbar {
@@ -124,7 +125,12 @@ button{
 .pictureOverlay{
     object-fit: contain;
     width: 200px;
+    transition: transform 200ms;
 }
+
+.pictureOverlay:hover {
+    transform: rotate(2deg);
+  }
 
 .infoOverlay{
     background-color: white;
@@ -199,7 +205,7 @@ button{
     height: 0;
     margin: 8px;
     box-sizing: border-box;
-    border: 32px solid #fff;
+    border: 64px solid #fff;
     border-color: #fff transparent #fff transparent;
     animation: lds-hourglass 1.2s infinite;
   }
@@ -216,6 +222,13 @@ button{
       transform: rotate(1800deg);
     }
   }
+
+.loadMoreBTNDiv{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    bottom: 20px;
+}
 
 .grass{
     background-color: hsl(120, 100%, 25%);

@@ -1,4 +1,5 @@
-const first151Pokemon = 152;
+let alreadyLoadedPokemon = 1
+let pokemonToLoad = 33;
 let loadedPokemon = [];
 let loadedPokemonNames = [];
 let currentPokemon;
@@ -7,11 +8,12 @@ let statsNames = [];
 let statsValues = [];
 let moveNames = [];
 let myChart;
+const y = 1
 
 
 async function loadPokemon() {
     document.getElementById('loadingSpinner').classList.add('lds-hourglass')
-    for (let i = 1; i < first151Pokemon; i++) {
+    for (let i = alreadyLoadedPokemon; i < pokemonToLoad; i++) {
         let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
         let response = await fetch(url);
         currentPokemon = await response.json();
@@ -23,13 +25,17 @@ async function loadPokemon() {
             console.log(currentPokemon);
         }
     }
+    x = alreadyLoadedPokemon
+    
     document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
-    await renderPokedex();
+    await renderPokedex(x);
+    alreadyLoadedPokemon =pokemonToLoad
+    pokemonToLoad = pokemonToLoad + 33
 }
 
 
- function renderPokedex() {
-    for (let i = 0; i < loadedPokemon.length; i++) {
+ function renderPokedex(x) {
+    for (let i = x-1; i < loadedPokemon.length; i++) {
 
         document.getElementById('pokedexContainer').innerHTML += htmlTemplate(i);
 
@@ -90,7 +96,7 @@ async function overlayNext(i) {
 
     let nextPokemon = +currentIndex + i;
 
-    if (nextPokemon >= first151Pokemon.length) {
+    if (nextPokemon >= pokemonToLoad) {
 
     } else {
         overlayTemplate(nextPokemon);
@@ -203,16 +209,22 @@ function findPokemon() {
     document.getElementById('pokedexContainer').innerHTML = '';
 
     if (search == '') {
+        document.getElementById('loadingSpinner').classList.add('lds-hourglass')
         document.getElementById('search').disabled =true
-        renderPokedex()
+        renderPokedex(y)
         document.getElementById('search').disabled =false
+        document.getElementById('loadMoreBTN').classList.remove('d-none')
+        document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
     } 
     else {
+        document.getElementById('loadingSpinner').classList.add('lds-hourglass')
+        document.getElementById('loadMoreBTN').classList.add('d-none')
         for (let i = 0; i < filteredPokemonNames.length; i++) {
             const pokemonName = filteredPokemonNames[i];
             let element = loadedPokemonNames.indexOf(pokemonName);
             renderSearch(element++);
         }
+        document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
     }
 };
 
