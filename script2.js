@@ -1,5 +1,5 @@
 let alreadyLoadedPokemon = 1
-let pokemonToLoad = 33;
+let pokemonToLoad = 25;
 let loadedPokemon = [];
 let loadedPokemonNames = [];
 let currentPokemon;
@@ -10,6 +10,12 @@ let moveNames = [];
 let myChart;
 const y = 1
 
+
+async function init(){
+    document.getElementById('loadMoreBTN').classList.add('d-none')
+    await loadPokemon ()
+    document.getElementById('loadMoreBTN').classList.remove('d-none')
+}
 
 async function loadPokemon() {
     document.getElementById('loadingSpinner').classList.add('lds-hourglass')
