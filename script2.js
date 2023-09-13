@@ -10,6 +10,7 @@ let myChart;
 
 
 async function loadPokemon() {
+    document.getElementById('loadingSpinner').classList.add('lds-hourglass')
     for (let i = 1; i < first151Pokemon; i++) {
         let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
         let response = await fetch(url);
@@ -22,11 +23,12 @@ async function loadPokemon() {
             console.log(currentPokemon);
         }
     }
+    document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
     await renderPokedex();
 }
 
 
-async function renderPokedex() {
+ function renderPokedex() {
     for (let i = 0; i < loadedPokemon.length; i++) {
 
         document.getElementById('pokedexContainer').innerHTML += htmlTemplate(i);
@@ -34,7 +36,7 @@ async function renderPokedex() {
         document.getElementById('pictureOverlay').src = `${currentPokemon['sprites']['other']['home']['front_default']}`;
 
         if (currentPokemon['types']['1']) {
-            document.getElementById(`type2.${i}`).innerHTML = await currentPokemon['types']['1']['type']['name'];
+            document.getElementById(`type2.${i}`).innerHTML =  currentPokemon['types']['1']['type']['name'];
         }
         setBackground(i);
     }
@@ -61,8 +63,6 @@ async function openOverlay(i) {
     currentIndex = i;
 
     overlayTemplate(i);
-
-    //destroyChart();
 }
 
 
@@ -229,7 +229,6 @@ async function renderSearch(i) {
 }
 
 
-
 function htmlTemplate(i) {
     return /*html*/`    
     <div id="pokemon${i}" class="pokedex" onclick="openOverlay('${i}')">
@@ -239,6 +238,7 @@ function htmlTemplate(i) {
     <span class="type" id="type2.${i}"></span>
     </div>`
 }
+
 
 function overlayTemplate(i) {
     let overlayPokemon = loadedPokemon[i]
@@ -280,3 +280,7 @@ function showHW() {
     toggle('chart', 'add');
     toggle('moves', 'add');
 }
+
+function innerClick(event) {
+    event.stopPropagation(); 
+  }
