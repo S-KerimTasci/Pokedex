@@ -8,38 +8,33 @@ let statsNames = [];
 let statsValues = [];
 let moveNames = [];
 let myChart;
-const x = alreadyLoadedPokemon
 const y = 1
 
 
-
- function init(){
-    loadPokemon ()
-}
-
 async function loadPokemon() {
+    document.getElementById('loadMoreBTN').classList.add('d-none')
     document.getElementById('loadingSpinner').classList.add('lds-hourglass')
     for (let i = alreadyLoadedPokemon; i < pokemonToLoad; i++) {
         let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
         let response = await fetch(url);
         currentPokemon = await response.json();
 
-        if (currentPokemon) {
-            await loadedPokemon.push(currentPokemon)
-            await loadedPokemonNames.push(currentPokemon['name'])
-        } else {
-            console.log(currentPokemon);
-        }
-        
+        await loadedPokemon.push(currentPokemon)
+        await loadedPokemonNames.push(currentPokemon['name'])
+       
     }
-    
-    await renderPokedex(x);
-    document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
-    
-    alreadyLoadedPokemon =pokemonToLoad
-    pokemonToLoad = pokemonToLoad + 33
+    x = alreadyLoadedPokemon
+    finishLoading(x)
 }
 
+
+async function finishLoading(x){
+    await renderPokedex(x);
+    document.getElementById('loadingSpinner').classList.remove('lds-hourglass')    
+    alreadyLoadedPokemon =pokemonToLoad
+    pokemonToLoad = pokemonToLoad + 33
+    document.getElementById('loadMoreBTN').classList.remove('d-none')
+}
 
  function renderPokedex(x) {
     for (let i = x-1; i < loadedPokemon.length; i++) {
