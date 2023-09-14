@@ -1,5 +1,5 @@
 let alreadyLoadedPokemon = 1
-let pokemonToLoad = 25;
+let pokemonToLoad = 18;
 let loadedPokemon = [];
 let loadedPokemonNames = [];
 let currentPokemon;
@@ -8,13 +8,13 @@ let statsNames = [];
 let statsValues = [];
 let moveNames = [];
 let myChart;
+const x = alreadyLoadedPokemon
 const y = 1
 
 
-async function init(){
-    document.getElementById('loadMoreBTN').classList.add('d-none')
-    await loadPokemon ()
-    document.getElementById('loadMoreBTN').classList.remove('d-none')
+
+ function init(){
+    loadPokemon ()
 }
 
 async function loadPokemon() {
@@ -30,11 +30,12 @@ async function loadPokemon() {
         } else {
             console.log(currentPokemon);
         }
+        
     }
-    x = alreadyLoadedPokemon
     
-    document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
     await renderPokedex(x);
+    document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
+    
     alreadyLoadedPokemon =pokemonToLoad
     pokemonToLoad = pokemonToLoad + 33
 }
@@ -47,8 +48,8 @@ async function loadPokemon() {
 
         document.getElementById('pictureOverlay').src = `${currentPokemon['sprites']['other']['home']['front_default']}`;
 
-        if (currentPokemon['types']['1']) {
-            document.getElementById(`type2.${i}`).innerHTML =  currentPokemon['types']['1']['type']['name'];
+        if (loadedPokemon[i]['types']['1']) {
+            document.getElementById(`type2.${i}`).innerHTML =  loadedPokemon[i]['types']['1']['type']['name'];
         }
         setBackground(i);
     }

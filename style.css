@@ -194,8 +194,8 @@ button{
     position: fixed;
     width: 80px;
     height: 80px;
-    left: calc((100% - 80px)/2);
-    top: 50%;
+    left: calc((100% - 100px)/2);
+    top: calc((100% - 100px)/2);
   }
   .lds-hourglass:after {
     content: " ";
@@ -205,7 +205,7 @@ button{
     height: 0;
     margin: 8px;
     box-sizing: border-box;
-    border: 64px solid #fff;
+    border: 44px solid #fff;
     border-color: #fff transparent #fff transparent;
     animation: lds-hourglass 1.2s infinite;
   }
