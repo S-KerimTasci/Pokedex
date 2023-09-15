@@ -12,39 +12,44 @@ const y = 1
 
 
 async function loadPokemon() {
-    document.getElementById('loadMoreBTN').classList.add('d-none')
-    document.getElementById('loadingSpinner').classList.add('lds-hourglass')
+    startloading();
     for (let i = alreadyLoadedPokemon; i < pokemonToLoad; i++) {
         let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
         let response = await fetch(url);
         currentPokemon = await response.json();
 
-        await loadedPokemon.push(currentPokemon)
-        await loadedPokemonNames.push(currentPokemon['name'])
-       
+        await loadedPokemon.push(currentPokemon);
+        await loadedPokemonNames.push(currentPokemon['name']);
+
     }
     x = alreadyLoadedPokemon
     finishLoading(x)
 }
 
-
-async function finishLoading(x){
-    await renderPokedex(x);
-    document.getElementById('loadingSpinner').classList.remove('lds-hourglass')    
-    alreadyLoadedPokemon =pokemonToLoad
-    pokemonToLoad = pokemonToLoad + 33
-    document.getElementById('loadMoreBTN').classList.remove('d-none')
+function startloading() {
+    document.getElementById('body').classList.add('overflowhidden')
+    document.getElementById('loadMoreBTN').classList.add('d-none')
+    document.getElementById('loadingSpinner').classList.add('lds-hourglass')
 }
 
- function renderPokedex(x) {
-    for (let i = x-1; i < loadedPokemon.length; i++) {
+async function finishLoading(x) {
+    await renderPokedex(x);
+    document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
+    alreadyLoadedPokemon = pokemonToLoad
+    pokemonToLoad = pokemonToLoad + 33
+    document.getElementById('loadMoreBTN').classList.remove('d-none')
+    document.getElementById('body').classList.remove('overflowhidden')
+}
+
+function renderPokedex(x) {
+    for (let i = x - 1; i < loadedPokemon.length; i++) {
 
         document.getElementById('pokedexContainer').innerHTML += htmlTemplate(i);
 
         document.getElementById('pictureOverlay').src = `${currentPokemon['sprites']['other']['home']['front_default']}`;
 
         if (loadedPokemon[i]['types']['1']) {
-            document.getElementById(`type2.${i}`).innerHTML =  loadedPokemon[i]['types']['1']['type']['name'];
+            document.getElementById(`type2.${i}`).innerHTML = loadedPokemon[i]['types']['1']['type']['name'];
         }
         setBackground(i);
     }
@@ -211,25 +216,29 @@ function findPokemon() {
     document.getElementById('pokedexContainer').innerHTML = '';
 
     if (search == '') {
-        document.getElementById('loadingSpinner').classList.add('lds-hourglass')
-        document.getElementById('search').disabled =true
-        renderPokedex(y)
-        document.getElementById('search').disabled =false
-        document.getElementById('loadMoreBTN').classList.remove('d-none')
-        document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
-    } 
+        renderEmptySearch()
+    }
     else {
-        document.getElementById('loadingSpinner').classList.add('lds-hourglass')
-        document.getElementById('loadMoreBTN').classList.add('d-none')
+        startloading();
         for (let i = 0; i < filteredPokemonNames.length; i++) {
             const pokemonName = filteredPokemonNames[i];
             let element = loadedPokemonNames.indexOf(pokemonName);
             renderSearch(element++);
         }
         document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
+        document.getElementById('body').classList.remove('overflowhidden')   
     }
 };
 
+
+function renderEmptySearch() {
+    document.getElementById('loadingSpinner').classList.add('lds-hourglass')
+    document.getElementById('search').disabled = true
+    renderPokedex(y)
+    document.getElementById('search').disabled = false
+    document.getElementById('loadMoreBTN').classList.remove('d-none')
+    document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
+}
 
 async function renderSearch(i) {
     document.getElementById('pokedexContainer').innerHTML += htmlTemplate(i);
@@ -296,5 +305,5 @@ function showHW() {
 }
 
 function innerClick(event) {
-    event.stopPropagation(); 
-  }
+    event.stopPropagation();
+}
