@@ -1,42 +1,53 @@
-const first151PokemonNames = ["bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard", "squirtle", "wartortle", "blastoise", "caterpie", "metapod", "butterfree", "weedle", "kakuna", "beedrill", "pidgey", "pidgeotto", "pidgeot", "rattata", "raticate", "spearow", "fearow", "ekans", "arbok", "pikachu", "raichu", "sandshrew", "sandslash", "nidoran-f", "nidorina", "nidoqueen", "nidoran-m", "nidorino", "nidoking", "clefairy", "clefable", "vulpix", "ninetales", "jigglypuff", "wigglytuff", "zubat", "golbat", "oddish", "gloom", "vileplume", "paras", "parasect", "venonat", "venomoth", "diglett", "dugtrio", "meowth", "persian", "psyduck", "golduck", "mankey", "primeape", "growlithe", "arcanine", "poliwag", "poliwhirl", "poliwrath", "abra", "kadabra", "alakazam", "machop", "machoke", "machamp", "bellsprout", "weepinbell", "victreebel", "tentacool", "tentacruel", "geodude", "graveler", "golem", "ponyta", "rapidash", "slowpoke", "slowbro", "magnemite", "magneton", "farfetchd", "doduo", "dodrio", "seel", "dewgong", "grimer", "muk", "shellder", "cloyster", "gastly", "haunter", "gengar", "onix", "drowzee", "hypno", "krabby", "kingler", "voltorb", "electrode", "exeggcute", "exeggutor", "cubone", "marowak", "hitmonlee", "hitmonchan", "lickitung", "koffing", "weezing", "rhyhorn", "rhydon", "chansey", "tangela", "kangaskhan", "horsea", "seadra", "goldeen", "seaking", "staryu", "starmie", "mr-mime", "scyther", "jynx", "electabuzz", "magmar", "pinsir", "tauros", "magikarp", "gyarados", "lapras", "ditto", "eevee", "vaporeon", "jolteon", "flareon", "porygon", "omanyte", "omastar", "kabuto", "kabutops", "aerodactyl", "snorlax", "articuno", "zapdos", "moltres", "dratini", "dragonair", "dragonite", "mewtwo", "mew"];
+let alreadyLoadedPokemon = 1
+let pokemonToLoad = 18;
+let loadedPokemon = [];
+let loadedPokemonNames = [];
 let currentPokemon;
 let currentIndex;
 let statsNames = [];
 let statsValues = [];
 let moveNames = [];
 let myChart;
-let isloading;
+const y = 1
 
 
 async function loadPokemon() {
-    isloading = true
-
-    for (let i = 0; i < first151PokemonNames.length; i++) {
-        const element = first151PokemonNames[i];
-
-        let url = `https://pokeapi.co/api/v2/pokemon/${element}`;
+    document.getElementById('loadMoreBTN').classList.add('d-none')
+    document.getElementById('loadingSpinner').classList.add('lds-hourglass')
+    for (let i = alreadyLoadedPokemon; i < pokemonToLoad; i++) {
+        let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
         let response = await fetch(url);
         currentPokemon = await response.json();
 
-        if (currentPokemon) {
-            await renderPokedex(i);
-        } else {
-            console.log(currentPokemon);
-        }
+        await loadedPokemon.push(currentPokemon)
+        await loadedPokemonNames.push(currentPokemon['name'])
+       
     }
-    isloading = false
+    x = alreadyLoadedPokemon
+    finishLoading(x)
 }
 
 
-async function renderPokedex(i) {
-    document.getElementById('pokedexContainer').innerHTML += htmlTemplate(i);
+async function finishLoading(x){
+    await renderPokedex(x);
+    document.getElementById('loadingSpinner').classList.remove('lds-hourglass')    
+    alreadyLoadedPokemon =pokemonToLoad
+    pokemonToLoad = pokemonToLoad + 33
+    document.getElementById('loadMoreBTN').classList.remove('d-none')
+}
 
-    document.getElementById('pictureOverlay').src = `${currentPokemon['sprites']['other']['home']['front_default']}`;
+ function renderPokedex(x) {
+    for (let i = x-1; i < loadedPokemon.length; i++) {
 
-    if (currentPokemon['types']['1']) {
-        document.getElementById(`type2.${i}`).innerHTML = await currentPokemon['types']['1']['type']['name'];
+        document.getElementById('pokedexContainer').innerHTML += htmlTemplate(i);
+
+        document.getElementById('pictureOverlay').src = `${currentPokemon['sprites']['other']['home']['front_default']}`;
+
+        if (loadedPokemon[i]['types']['1']) {
+            document.getElementById(`type2.${i}`).innerHTML =  loadedPokemon[i]['types']['1']['type']['name'];
+        }
+        setBackground(i);
     }
-    setBackground(i);
 }
 
 
@@ -59,10 +70,7 @@ async function openOverlay(i) {
     show();
     currentIndex = i;
 
-    let url = `https://pokeapi.co/api/v2/pokemon/${first151PokemonNames[i]}`;
-    overlayTemplate(url);
-
-    destroyChart();
+    overlayTemplate(i);
 }
 
 
@@ -76,8 +84,7 @@ async function overlayPrevious(i) {
 
     if (previousPokemon < 0) {
     } else {
-        let url = `https://pokeapi.co/api/v2/pokemon/${first151PokemonNames[previousPokemon]}`;
-        overlayTemplate(url);
+        overlayTemplate(previousPokemon);
         currentIndex = previousPokemon;
     }
 }
@@ -91,11 +98,10 @@ async function overlayNext(i) {
 
     let nextPokemon = +currentIndex + i;
 
-    if (nextPokemon >= first151PokemonNames.length) {
+    if (nextPokemon >= pokemonToLoad) {
 
     } else {
-        let url = `https://pokeapi.co/api/v2/pokemon/${first151PokemonNames[nextPokemon]}`;
-        overlayTemplate(url);
+        overlayTemplate(nextPokemon);
         currentIndex = nextPokemon;
     }
 }
@@ -109,6 +115,8 @@ function hide() {
     toggle('overlay', 'add');
     toggle('overlayHeightWeight', 'remove');
     toggle('chart', 'add');
+
+    destroyChart();
 }
 
 function show() {
@@ -196,74 +204,76 @@ function findPokemon() {
     let search = document.getElementById('search').value
     search = search.toLowerCase();
 
-    const filteredPokemonNames = first151PokemonNames.filter((pokemonName) => {
-        return pokemonName.startsWith(search);
+    const filteredPokemonNames = loadedPokemonNames.filter((pokemonName) => {
+        return pokemonName.includes(search);
     });
 
-    if (search == '' && isloading == true) {
-    } else if (search == '' && isloading == false) {
-        document.getElementById('pokedexContainer').innerHTML = '';
-        loadPokemon()
-    } else {
-        document.getElementById('pokedexContainer').innerHTML = '';
+    document.getElementById('pokedexContainer').innerHTML = '';
+
+    if (search == '') {
+        document.getElementById('loadingSpinner').classList.add('lds-hourglass')
+        document.getElementById('search').disabled =true
+        renderPokedex(y)
+        document.getElementById('search').disabled =false
+        document.getElementById('loadMoreBTN').classList.remove('d-none')
+        document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
+    } 
+    else {
+        document.getElementById('loadingSpinner').classList.add('lds-hourglass')
+        document.getElementById('loadMoreBTN').classList.add('d-none')
         for (let i = 0; i < filteredPokemonNames.length; i++) {
             const pokemonName = filteredPokemonNames[i];
-            const element = first151PokemonNames.indexOf(pokemonName);
-            renderSearch(pokemonName, element);
+            let element = loadedPokemonNames.indexOf(pokemonName);
+            renderSearch(element++);
         }
+        document.getElementById('loadingSpinner').classList.remove('lds-hourglass')
     }
 };
 
 
-async function renderSearch(i, j) {
-    let url = `https://pokeapi.co/api/v2/pokemon/${i}`;
-    let response = await fetch(url);
-    currentPokemon = await response.json();
+async function renderSearch(i) {
+    document.getElementById('pokedexContainer').innerHTML += htmlTemplate(i);
 
-    if (currentPokemon) {
-        renderPokedex(j);
-    } else {
-        console.log(currentPokemon);
+    document.getElementById('pictureOverlay').src = `${currentPokemon['sprites']['other']['home']['front_default']}`;
+
+    if (currentPokemon['types']['1']) {
+        document.getElementById(`type2.${i}`).innerHTML = await currentPokemon['types']['1']['type']['name'];
     }
+    setBackground(i);
 }
 
 
 function htmlTemplate(i) {
     return /*html*/`    
     <div id="pokemon${i}" class="pokedex" onclick="openOverlay('${i}')">
-    <h1 id="name${i}">${currentPokemon['name']}</h1>
-    <img  class="picture" src="${currentPokemon['sprites']['other']['home']['front_default']}" id="picture${i}" alt="">
-    <span class="type" id="type1.${i}">${currentPokemon['types']['0']['type']['name']}</span>
+    <h1 id="name${i}">${loadedPokemon[i]['name']}</h1>
+    <img  class="picture" src="${loadedPokemon[i]['sprites']['other']['home']['front_default']}" id="picture${i}" alt="">
+    <span class="type" id="type1.${i}">${loadedPokemon[i]['types']['0']['type']['name']}</span>
     <span class="type" id="type2.${i}"></span>
     </div>`
 }
 
-function overlayTemplate(url) {
-    fetch(url)
-        .then((response) => response.json())
-        .then((overlayPokemon) => {
-            const overlayPokemonType = overlayPokemon['types'][0]['type']['name'];
 
-            document.getElementById('overlayCentre').className = '';
-            document.getElementById('nameOverlay').innerHTML = overlayPokemon['name'];
-            document.getElementById('pictureOverlay').src =
-                overlayPokemon['sprites']['other']['home']['front_default'];
-            document.getElementById('height').innerHTML =
-                formatNumberWithComma(overlayPokemon['height']) + 'm';
-            document.getElementById('weight').innerHTML =
-                formatNumberWithComma(overlayPokemon['weight']) + 'kg';
+function overlayTemplate(i) {
+    let overlayPokemon = loadedPokemon[i]
+    let overlayPokemonType = loadedPokemon[i]['types'][0]['type']['name'];
 
-            document.getElementById('overlayCentre').classList.add(overlayPokemonType, 'overlayCentre');
+    document.getElementById('overlayCentre').className = '';
+    document.getElementById('nameOverlay').innerHTML = overlayPokemon['name'];
+    document.getElementById('pictureOverlay').src =
+        overlayPokemon['sprites']['other']['home']['front_default'];
+    document.getElementById('height').innerHTML =
+        formatNumberWithComma(overlayPokemon['height']) + 'm';
+    document.getElementById('weight').innerHTML =
+        formatNumberWithComma(overlayPokemon['weight']) + 'kg';
 
-            pushStats(overlayPokemon)
-            pushMoves(overlayPokemon)
+    document.getElementById('overlayCentre').classList.add(overlayPokemonType, 'overlayCentre');
 
-            draw()
-            renderMoves()
-        })
-        .catch((error) => {
-            console.error('Fehler bei der Verarbeitung des Pokémon-Overlays:', error);
-        });
+    pushStats(overlayPokemon)
+    pushMoves(overlayPokemon)
+
+    draw()
+    renderMoves()
 }
 
 
@@ -284,3 +294,7 @@ function showHW() {
     toggle('chart', 'add');
     toggle('moves', 'add');
 }
+
+function innerClick(event) {
+    event.stopPropagation(); 
+  }
